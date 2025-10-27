@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Directory</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header__content">
+                    <h1 class="header__title">Employee Directory</h1>
+                    <div class="search-container">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            class="form-control search-input" 
+                            placeholder="Search employees by name, title, department, or skills..."
+                        >
+                    </div>
+                    <button class="btn btn--outline mobile-filter-toggle" id="mobileFilterToggle">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="4" y1="21" x2="4" y2="14"></line>
+                            <line x1="4" y1="10" x2="4" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="3"></line>
+                            <line x1="20" y1="21" x2="20" y2="16"></line>
+                            <line x1="20" y1="12" x2="20" y2="3"></line>
+                            <line x1="1" y1="14" x2="7" y2="14"></line>
+                            <line x1="9" y1="8" x2="15" y2="8"></line>
+                            <line x1="17" y1="16" x2="23" y2="16"></line>
+                        </svg>
+                        Filters
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <div class="main__content">
+                    <!-- Filter Sidebar -->
+                    <aside class="sidebar" id="sidebar">
+                        <div class="sidebar__header">
+                            <h3>Filters</h3>
+                            <button class="btn btn--outline btn--sm clear-filters" id="clearFilters">
+                                Clear All
+                            </button>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h4 class="filter-group__title">Department</h4>
+                            <div class="filter-options" id="departmentFilters">
+                                <!-- Department filters will be populated by JS -->
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4 class="filter-group__title">Location</h4>
+                            <div class="filter-options" id="locationFilters">
+                                <!-- Location filters will be populated by JS -->
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4 class="filter-group__title">Experience Level</h4>
+                            <div class="filter-options" id="experienceFilters">
+                                <label class="filter-option">
+                                    <input type="checkbox" value="junior" data-filter="experience">
+                                    <span class="checkmark"></span>
+                                    Junior (0-3 years)
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="mid" data-filter="experience">
+                                    <span class="checkmark"></span>
+                                    Mid-level (4-7 years)
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="senior" data-filter="experience">
+                                    <span class="checkmark"></span>
+                                    Senior (8+ years)
+                                </label>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Main Content Area -->
+                    <div class="content">
+                        <!-- Results Info -->
+                        <div class="results-info">
+                            <span id="resultsCount">Loading employees...</span>
+                            <div class="active-filters" id="activeFilters"></div>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div class="loading" id="loadingState">
+                            <div class="loading__spinner"></div>
+                            <p>Loading employees...</p>
+                        </div>
+
+                        <!-- Employee Grid -->
+                        <div class="employee-grid" id="employeeGrid">
+                            <!-- Employee cards will be populated by JS -->
+                        </div>
+
+                        <!-- No Results -->
+                        <div class="no-results hidden" id="noResults">
+                            <div class="no-results__content">
+                                <h3>No employees found</h3>
+                                <p>Try adjusting your search or filters to find more employees.</p>
+                                <button class="btn btn--outline" id="clearSearch">Clear Search & Filters</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Employee Profile Modal -->
+        <div class="modal hidden" id="profileModal">
+            <div class="modal__backdrop"></div>
+            <div class="modal__content">
+                <div class="modal__header">
+                    <h2 class="modal__title" id="modalEmployeeName"></h2>
+                    <button class="modal__close" id="closeModal" aria-label="Close modal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal__body">
+                    <div class="employee-profile">
+                        <div class="employee-profile__header">
+                            <div class="employee-profile__avatar">
+                                <img id="modalEmployeeAvatar" src="" alt="" loading="lazy">
+                            </div>
+                            <div class="employee-profile__basic-info">
+                                <h3 id="modalEmployeeTitle"></h3>
+                                <p class="department" id="modalEmployeeDepartment"></p>
+                                <p class="location" id="modalEmployeeLocation"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="employee-profile__details">
+                            <div class="detail-section">
+                                <h4>Contact Information</h4>
+                                <div class="contact-info">
+                                    <div class="contact-item">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="m22 2-7 20-4-9-9-4 20-7z"></path>
+                                        </svg>
+                                        <a href="#" id="modalEmployeeEmail"></a>
+                                    </div>
+                                    <div class="contact-item">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                        </svg>
+                                        <a href="#" id="modalEmployeePhone"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h4>Experience</h4>
+                                <div class="experience-info">
+                                    <p><strong>Years of Experience:</strong> <span id="modalEmployeeExperience"></span></p>
+                                    <p><strong>Hire Date:</strong> <span id="modalEmployeeHireDate"></span></p>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h4>Skills</h4>
+                                <div class="skills-list" id="modalEmployeeSkills">
+                                    <!-- Skills will be populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
